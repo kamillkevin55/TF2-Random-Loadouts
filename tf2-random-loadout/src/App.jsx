@@ -7,6 +7,7 @@ function App() {
   const [currentClass, setCurrentClass] = useState(null);
   const [loadout, setLoadout] = useState({});
   const [excludedWeapons, setExcludedWeapons] = useState([]);
+  const [includeReskins, setIncludeReskins] = useState(true);
 
   // Load from localeStorage if needed, but simplest is memory for now.
   // Optional: Persist exclusions
@@ -25,22 +26,26 @@ function App() {
     setExcludedWeapons([]);
   };
 
+  const toggleReskins = () => {
+    setIncludeReskins(prev => !prev);
+  };
+
   const handleClassSelect = (cls) => {
     setCurrentClass(cls);
     // Auto generate on select? Or wait for button?
     // Let's auto generate for better UX
-    setLoadout(generateLoadout(cls, excludedWeapons));
+    setLoadout(generateLoadout(cls, excludedWeapons, includeReskins));
   };
 
   const handleRandomClass = () => {
     const cls = getRandomClass();
     setCurrentClass(cls);
-    setLoadout(generateLoadout(cls, excludedWeapons));
+    setLoadout(generateLoadout(cls, excludedWeapons, includeReskins));
   };
 
   const handleGenerate = () => {
     if (currentClass) {
-      setLoadout(generateLoadout(currentClass, excludedWeapons));
+      setLoadout(generateLoadout(currentClass, excludedWeapons, includeReskins));
     }
   };
 
@@ -52,6 +57,8 @@ function App() {
           excludedWeapons={excludedWeapons}
           toggleExclusion={toggleExclusion}
           resetExclusions={resetExclusions}
+          includeReskins={includeReskins}
+          toggleReskins={toggleReskins}
         />
       </div>
 

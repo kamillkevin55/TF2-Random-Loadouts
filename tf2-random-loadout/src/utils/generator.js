@@ -13,27 +13,22 @@ export function getRandomClass() {
  * Generates a random loadout for a specific class, respecting exclusions.
  * @param {string} className 
  * @param {string[]} excludedIds - Array of weapon IDs to exclude
+ * @param {boolean} includeReskins - Whether to include reskin weapons
  * @returns {object} - { [slot]: weaponObject }
  */
-export function generateLoadout(className, excludedIds = []) {
+export function generateLoadout(className, excludedIds = [], includeReskins = false) {
     const excludedSet = new Set(excludedIds);
     const classWeapons = WEAPONS.filter(w => w.classes.includes(className));
 
     // Group by slot
     const slots = {};
 
-    // Determine slots for the class
-    // Most have Primary, Secondary, Melee.
-    // Engineer has PDA. Spy has PDA, PDA2.
-    // We can just iterate over the weapons available for the class and find unique slots.
-    // But strictly, we want to ensure every slot gets filled if possible.
-
     let requiredSlots = [SLOTS.PRIMARY, SLOTS.SECONDARY, SLOTS.MELEE];
 
     if (className === "Engineer") requiredSlots = [SLOTS.PRIMARY, SLOTS.SECONDARY, SLOTS.MELEE, SLOTS.PDA];
     if (className === "Spy") {
-        // Spy: Secondary (Gun) -> Melee (Knife) -> Watch (Watch) -> Building (Sapper)
-        requiredSlots = [SLOTS.SECONDARY, SLOTS.MELEE, SLOTS.WATCH, SLOTS.BUILDING];
+        // Spy: Secondary (Gun) -> Melee (Knife) -> Watch (Watch) -> Sapper (Sapper)
+        requiredSlots = [SLOTS.SECONDARY, SLOTS.MELEE, SLOTS.WATCH, SLOTS.SAPPER];
     }
 
     const loadout = {};
@@ -41,9 +36,12 @@ export function generateLoadout(className, excludedIds = []) {
     requiredSlots.forEach(slot => {
         // Filter weapons for this slot and class
         // Also filter out exclusions
-        const available = classWeapons.filter(w =>
-            w.slot === slot && !excludedSet.has(w.id)
-        );
+        const available = classWeapons.filter(w => {
+            if (w.slot !== slot) return false;
+            if (excludedSet.has(w.id)) return false;
+            if (!includeReskins && w.reskinOf) return false;
+            return true;
+        });
 
         if (available.length > 0) {
             const randomWeapon = available[Math.floor(Math.random() * available.length)];

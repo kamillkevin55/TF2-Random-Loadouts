@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { WEAPONS, SLOTS, CLASSES } from '../data/tf2_data';
-import { ChevronDown, ChevronRight, Search, CheckSquare, Square } from 'lucide-react';
+import { ChevronDown, ChevronRight, Search, CheckSquare, Square, Plus, Minus, Check } from 'lucide-react';
 
-export default function Sidebar({ excludedWeapons, toggleExclusion, resetExclusions }) {
+export default function Sidebar({ excludedWeapons, toggleExclusion, resetExclusions, includeReskins, toggleReskins }) {
     const [searchTerm, setSearchTerm] = useState('');
     const [expandedClasses, setExpandedClasses] = useState(
         CLASSES.reduce((acc, cls) => ({ ...acc, [cls]: false }), {})
@@ -10,6 +10,18 @@ export default function Sidebar({ excludedWeapons, toggleExclusion, resetExclusi
 
     const toggleClass = (cls) => {
         setExpandedClasses(prev => ({ ...prev, [cls]: !prev[cls] }));
+    };
+
+    const expandAll = () => {
+        setExpandedClasses(
+            CLASSES.reduce((acc, cls) => ({ ...acc, [cls]: true }), {})
+        );
+    };
+
+    const collapseAll = () => {
+        setExpandedClasses(
+            CLASSES.reduce((acc, cls) => ({ ...acc, [cls]: false }), {})
+        );
     };
 
     // Group weapons by Class -> Slot
@@ -36,9 +48,45 @@ export default function Sidebar({ excludedWeapons, toggleExclusion, resetExclusi
     return (
         <div className="w-80 bg-[#1e1e1e] border-r border-[#333] h-full flex flex-col text-gray-200">
             <div className="p-4 border-b border-[#333]">
-                <h2 className="text-xl font-bold bg-gradient-to-r from-[#cf6a32] to-[#b85d2b] bg-clip-text text-transparent mb-4">
-                    Weapon Pool
-                </h2>
+                <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-xl font-bold bg-gradient-to-r from-[#cf6a32] to-[#b85d2b] bg-clip-text text-transparent">
+                        Weapon Pool
+                    </h2>
+                    <div className="flex gap-1">
+                        <button
+                            onClick={expandAll}
+                            className="p-1 hover:bg-[#333] rounded text-gray-400 hover:text-white transition-colors"
+                            title="Expand all"
+                        >
+                            <Plus size={18} />
+                        </button>
+                        <button
+                            onClick={collapseAll}
+                            className="p-1 hover:bg-[#333] rounded text-gray-400 hover:text-white transition-colors"
+                            title="Collapse all"
+                        >
+                            <Minus size={18} />
+                        </button>
+                    </div>
+                </div>
+
+                <div className="mb-4">
+                    <label className="flex items-center space-x-3 cursor-pointer group select-none">
+                        <div className={`
+                                w-5 h-5 rounded border border-[#555] flex items-center justify-center transition-colors
+                                ${includeReskins ? 'bg-[#cf6a32] border-[#cf6a32]' : 'bg-[#121212] group-hover:border-[#cf6a32]'}
+                            `}>
+                            {includeReskins && <Check size={14} className="text-white" />}
+                        </div>
+                        <input
+                            type="checkbox"
+                            className="hidden"
+                            checked={includeReskins}
+                            onChange={toggleReskins}
+                        />
+                        <span className="text-gray-300 group-hover:text-white text-sm font-medium">Include Reskins</span>
+                    </label>
+                </div>
 
                 <div className="relative">
                     <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-500" />
@@ -85,14 +133,19 @@ export default function Sidebar({ excludedWeapons, toggleExclusion, resetExclusi
                                             <h4 className="text-xs font-semibold text-gray-500 uppercase mb-2 mt-2">{slot}</h4>
                                             <div className="space-y-1">
                                                 {weapons.map(w => {
-                                                    const isExcluded = excludedWeapons.includes(w.id);
+                                                    const isReskinHidden = !includeReskins && w.reskinOf;
+                                                    const isExcluded = excludedWeapons.includes(w.id) || isReskinHidden;
+                                                    const isManualExclusion = excludedWeapons.includes(w.id);
+
                                                     return (
                                                         <button
                                                             key={`${cls}-${w.id}`}
                                                             onClick={() => toggleExclusion(w.id)}
+                                                            disabled={isReskinHidden}
                                                             className={`
                                 w-full flex items-center gap-3 p-2 rounded-md text-sm text-left transition-all
                                 ${isExcluded ? 'bg-red-900/10 text-gray-500' : 'hover:bg-[#2a2a2a] text-gray-300'}
+                                ${isReskinHidden ? 'opacity-50 cursor-not-allowed' : ''}
                               `}
                                                         >
                                                             {isExcluded ? (
@@ -112,7 +165,7 @@ export default function Sidebar({ excludedWeapons, toggleExclusion, resetExclusi
                         </div>
                     );
                 })}
-            </div>
-        </div>
+            </div >
+        </div >
     );
 }

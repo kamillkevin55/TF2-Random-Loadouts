@@ -1,5 +1,5 @@
 import React from 'react';
-import { CLASSES, SLOTS } from '../data/tf2_data';
+import { CLASSES, SLOTS, WEAPONS } from '../data/tf2_data';
 import { RefreshCw, HelpCircle } from 'lucide-react';
 
 export default function LoadoutDisplay({ currentClass, loadout, onGenerate, onClassSelect, onRandomClass }) {
@@ -74,11 +74,22 @@ export default function LoadoutDisplay({ currentClass, loadout, onGenerate, onCl
                                             {slot}
                                         </h3>
 
-                                        <div className="min-h-[60px] flex items-center">
+                                        <div className="min-h-[60px] flex flex-col justify-center items-center text-center">
                                             {weapon ? (
-                                                <p className="text-xl font-medium text-white group-hover:text-[#cf6a32] transition-colors">
-                                                    {weapon.name}
-                                                </p>
+                                                <>
+                                                    <p className="text-xl font-medium text-white group-hover:text-[#cf6a32] transition-colors leading-tight">
+                                                        {weapon.name}
+                                                    </p>
+                                                    {weapon.reskinOf && (
+                                                        <span className="text-xs text-gray-500 mt-1 font-mono">
+                                                            ({(() => {
+                                                                if (weapon.reskinOf === "stock_melee") return "Stock Melee";
+                                                                const original = WEAPONS.find(w => w.id === weapon.reskinOf);
+                                                                return original ? original.name : weapon.reskinOf;
+                                                            })()})
+                                                        </span>
+                                                    )}
+                                                </>
                                             ) : (
                                                 <p className="text-lg italic text-gray-600">
                                                     None Available

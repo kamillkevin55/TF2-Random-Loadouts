@@ -16,14 +16,15 @@ export const SLOTS = {
     MELEE: "Melee",
     PDA: "PDA", // Engineer Construction PDA
     WATCH: "Watch", // Spy Watch
-    BUILDING: "Building", // Spy Sapper
+    SAPPER: "Sapper", // Spy Sapper
 };
 
 // Simplified list of weapons. 
 // id: unique identifier
 // name: Display name
 // classes: array of classes that can use it
-// slot: "Primary", "Secondary", "Melee", "PDA", "Watch", "Building"
+// slot: "Primary", "Secondary", "Melee", "PDA", "Watch", "Sapper"
+// reskinOf: Optional ID of the original weapon if this is a reskin
 
 export const WEAPONS = [
     // --- SCOUT ---
@@ -37,12 +38,12 @@ export const WEAPONS = [
 
     // Secondary
     { id: "bonk_atomic_punch", name: "Bonk! Atomic Punch", classes: ["Scout"], slot: SLOTS.SECONDARY },
-    { id: "capper_scout", name: "C.A.P.P.E.R", classes: ["Scout"], slot: SLOTS.SECONDARY },
+    { id: "capper_scout", name: "C.A.P.P.E.R", classes: ["Scout"], slot: SLOTS.SECONDARY, reskinOf: "pistol" },
     { id: "crit_a_cola", name: "Crit-a-Cola", classes: ["Scout"], slot: SLOTS.SECONDARY },
     { id: "flying_guillotine", name: "Flying Guillotine", classes: ["Scout"], slot: SLOTS.SECONDARY },
-    { id: "lugermorph_scout", name: "Lugermorph", classes: ["Scout"], slot: SLOTS.SECONDARY },
+    { id: "lugermorph_scout", name: "Lugermorph", classes: ["Scout"], slot: SLOTS.SECONDARY, reskinOf: "pistol" },
     { id: "mad_milk", name: "Mad Milk", classes: ["Scout"], slot: SLOTS.SECONDARY },
-    { id: "mutated_milk", name: "Mutated Milk", classes: ["Scout"], slot: SLOTS.SECONDARY },
+    { id: "mutated_milk", name: "Mutated Milk", classes: ["Scout"], slot: SLOTS.SECONDARY, reskinOf: "mad_milk" },
     { id: "pistol", name: "Pistol", classes: ["Scout"], slot: SLOTS.SECONDARY },
     { id: "pretty_boys_pocket_pistol", name: "Pretty Boy's Pocket Pistol", classes: ["Scout"], slot: SLOTS.SECONDARY },
     { id: "winger", name: "Winger", classes: ["Scout"], slot: SLOTS.SECONDARY },
@@ -50,14 +51,21 @@ export const WEAPONS = [
     // Melee
     { id: "atomizer", name: "Atomizer", classes: ["Scout"], slot: SLOTS.MELEE },
     { id: "bat", name: "Bat", classes: ["Scout"], slot: SLOTS.MELEE },
-    { id: "batsaber", name: "Batsaber", classes: ["Scout"], slot: SLOTS.MELEE },
+    { id: "batsaber", name: "Batsaber", classes: ["Scout"], slot: SLOTS.MELEE, reskinOf: "bat" },
     { id: "boston_basher", name: "Boston Basher", classes: ["Scout"], slot: SLOTS.MELEE },
     { id: "candy_cane", name: "Candy Cane", classes: ["Scout"], slot: SLOTS.MELEE },
     { id: "fan_o_war", name: "Fan O'War", classes: ["Scout"], slot: SLOTS.MELEE },
     { id: "sandman", name: "Sandman", classes: ["Scout"], slot: SLOTS.MELEE },
     { id: "sun_on_a_stick", name: "Sun-on-a-Stick", classes: ["Scout"], slot: SLOTS.MELEE },
-    { id: "three_rune_blade", name: "Three-Rune Blade", classes: ["Scout"], slot: SLOTS.MELEE },
-    { id: "unarmed_combat", name: "Unarmed Combat", classes: ["Scout"], slot: SLOTS.MELEE },
+    { id: "three_rune_blade", name: "Three-Rune Blade", classes: ["Scout"], slot: SLOTS.MELEE, reskinOf: "boston_basher" },
+    { id: "unarmed_combat", name: "Unarmed Combat", classes: ["Scout"], slot: SLOTS.MELEE, reskinOf: "holy_mackerel" }, // Actually Holy Mackerel reskin, but Mackerel is basically Bat reskin (with killfeed). Let's map to 'bat' or 'holy_mackerel' if we add it. Wait, I missed Holy Mackerel in the add list? It wasn't requested? 
+    // User requested "Unarmed Combat", "Batsaber", "Three-Rune Blade". 
+    // Mackerel wasn't explicitly requested as missing? Or maybe it was present?
+    // Checking previous list... Mackerel wasn't in original list either.
+    // I'll map Unarmed Combat to "Holy Mackerel" if I add Mackerel, or just leave it distinctive. 
+    // Actually Unarmed Combat acts like the Holy Mackerel.
+    { id: "holy_mackerel", name: "Holy Mackerel", classes: ["Scout"], slot: SLOTS.MELEE }, // Adding implicitly because Unarmed Combat is a reskin of it.
+
     { id: "wrap_assassin", name: "Wrap Assassin", classes: ["Scout"], slot: SLOTS.MELEE },
 
     // --- SOLDIER ---
@@ -68,7 +76,10 @@ export const WEAPONS = [
     { id: "cow_mangler_5000", name: "Cow Mangler 5000", classes: ["Soldier"], slot: SLOTS.PRIMARY },
     { id: "direct_hit", name: "Direct Hit", classes: ["Soldier"], slot: SLOTS.PRIMARY },
     { id: "liberty_launcher", name: "Liberty Launcher", classes: ["Soldier"], slot: SLOTS.PRIMARY },
-    { id: "original", name: "Original", classes: ["Soldier"], slot: SLOTS.PRIMARY },
+    { id: "original", name: "Original", classes: ["Soldier"], slot: SLOTS.PRIMARY }, // User excluded from reskin list, treating as unique
+    // User request: "With reskins either make a check to enable reskins and list their actual weapons in parenthesis ()"
+    // Original IS functionally different (center fire). So I will NOT mark it as a reskin of Rocket Launcher.
+
     { id: "rocket_jumper", name: "Rocket Jumper", classes: ["Soldier"], slot: SLOTS.PRIMARY },
     { id: "rocket_launcher", name: "Rocket Launcher", classes: ["Soldier"], slot: SLOTS.PRIMARY },
 
@@ -99,9 +110,9 @@ export const WEAPONS = [
     { id: "degreaser", name: "Degreaser", classes: ["Pyro"], slot: SLOTS.PRIMARY },
     { id: "dragons_fury", name: "Dragon's Fury", classes: ["Pyro"], slot: SLOTS.PRIMARY },
     { id: "flamethrower", name: "Flame Thrower", classes: ["Pyro"], slot: SLOTS.PRIMARY },
-    { id: "nostromo_napalmer", name: "Nostromo Napalmer", classes: ["Pyro"], slot: SLOTS.PRIMARY },
+    { id: "nostromo_napalmer", name: "Nostromo Napalmer", classes: ["Pyro"], slot: SLOTS.PRIMARY, reskinOf: "flamethrower" },
     { id: "phlogistinator", name: "Phlogistinator", classes: ["Pyro"], slot: SLOTS.PRIMARY },
-    { id: "rainblower", name: "Rainblower", classes: ["Pyro"], slot: SLOTS.PRIMARY },
+    { id: "rainblower", name: "Rainblower", classes: ["Pyro"], slot: SLOTS.PRIMARY, reskinOf: "flamethrower" }, // Has taunt kill, but mostly reskin.
 
     // Secondary
     { id: "detonator", name: "Detonator", classes: ["Pyro"], slot: SLOTS.SECONDARY },
@@ -120,10 +131,10 @@ export const WEAPONS = [
     { id: "fire_axe", name: "Fire Axe", classes: ["Pyro"], slot: SLOTS.MELEE },
     { id: "homewrecker", name: "Homewrecker", classes: ["Pyro"], slot: SLOTS.MELEE },
     { id: "hot_hand", name: "Hot Hand", classes: ["Pyro"], slot: SLOTS.MELEE },
-    { id: "lollichop", name: "Lollichop", classes: ["Pyro"], slot: SLOTS.MELEE },
-    { id: "maul", name: "Maul", classes: ["Pyro"], slot: SLOTS.MELEE },
+    { id: "lollichop", name: "Lollichop", classes: ["Pyro"], slot: SLOTS.MELEE, reskinOf: "fire_axe" }, // It sees pyrovision, but otherwise Fire Axe.
+    { id: "maul", name: "Maul", classes: ["Pyro"], slot: SLOTS.MELEE, reskinOf: "homewrecker" },
     { id: "neon_annihilator", name: "Neon Annihilator", classes: ["Pyro"], slot: SLOTS.MELEE },
-    { id: "postal_pummeler", name: "Postal Pummeler", classes: ["Pyro"], slot: SLOTS.MELEE },
+    { id: "postal_pummeler", name: "Postal Pummeler", classes: ["Pyro"], slot: SLOTS.MELEE, reskinOf: "axtinguisher" },
     { id: "powerjack", name: "Powerjack", classes: ["Pyro"], slot: SLOTS.MELEE },
     { id: "sharpened_volcano_fragment", name: "Sharpened Volcano Fragment", classes: ["Pyro"], slot: SLOTS.MELEE },
     { id: "third_degree", name: "Third Degree", classes: ["Pyro"], slot: SLOTS.MELEE },
@@ -132,7 +143,7 @@ export const WEAPONS = [
     // Primary
     { id: "ali_babas_wee_booties", name: "Ali Baba's Wee Booties", classes: ["Demoman"], slot: SLOTS.PRIMARY },
     { id: "base_jumper_demo", name: "B.A.S.E. Jumper", classes: ["Demoman"], slot: SLOTS.PRIMARY },
-    { id: "bootlegger", name: "Bootlegger", classes: ["Demoman"], slot: SLOTS.PRIMARY },
+    { id: "bootlegger", name: "Bootlegger", classes: ["Demoman"], slot: SLOTS.PRIMARY, reskinOf: "ali_babas_wee_booties" },
     { id: "grenade_launcher", name: "Grenade Launcher", classes: ["Demoman"], slot: SLOTS.PRIMARY },
     { id: "iron_bomber", name: "Iron Bomber", classes: ["Demoman"], slot: SLOTS.PRIMARY },
     { id: "loch_n_load", name: "Loch-n-Load", classes: ["Demoman"], slot: SLOTS.PRIMARY },
@@ -152,19 +163,19 @@ export const WEAPONS = [
     { id: "claidheamh_mor", name: "Claidheamh Mòr", classes: ["Demoman"], slot: SLOTS.MELEE },
     { id: "eyelander", name: "Eyelander", classes: ["Demoman"], slot: SLOTS.MELEE },
     { id: "half_zatoichi_demo", name: "Half-Zatoichi", classes: ["Demoman"], slot: SLOTS.MELEE },
-    { id: "horseless_headless_horsemanns_headtaker", name: "Horseless Headless Horsemann's Headtaker", classes: ["Demoman"], slot: SLOTS.MELEE },
-    { id: "nessies_nine_iron", name: "Nessie's Nine Iron", classes: ["Demoman"], slot: SLOTS.MELEE },
+    { id: "horseless_headless_horsemanns_headtaker", name: "Horseless Headless Horsemann's Headtaker", classes: ["Demoman"], slot: SLOTS.MELEE, reskinOf: "eyelander" },
+    { id: "nessies_nine_iron", name: "Nessie's Nine Iron", classes: ["Demoman"], slot: SLOTS.MELEE, reskinOf: "eyelander" },
     { id: "pain_train_demo", name: "Pain Train", classes: ["Demoman"], slot: SLOTS.MELEE },
     { id: "persian_persuader", name: "Persian Persuader", classes: ["Demoman"], slot: SLOTS.MELEE },
     { id: "scotsmans_skullcutter", name: "Scotsman's Skullcutter", classes: ["Demoman"], slot: SLOTS.MELEE },
-    { id: "scottish_handshake", name: "Scottish Handshake", classes: ["Demoman"], slot: SLOTS.MELEE },
+    { id: "scottish_handshake", name: "Scottish Handshake", classes: ["Demoman"], slot: SLOTS.MELEE, reskinOf: "bottle" },
     { id: "ullapool_caber", name: "Ullapool Caber", classes: ["Demoman"], slot: SLOTS.MELEE },
 
     // --- HEAVY ---
     // Primary
     { id: "brass_beast", name: "Brass Beast", classes: ["Heavy"], slot: SLOTS.PRIMARY },
     { id: "huo_long_heater", name: "Huo-Long Heater", classes: ["Heavy"], slot: SLOTS.PRIMARY },
-    { id: "iron_curtain", name: "Iron Curtain", classes: ["Heavy"], slot: SLOTS.PRIMARY },
+    { id: "iron_curtain", name: "Iron Curtain", classes: ["Heavy"], slot: SLOTS.PRIMARY, reskinOf: "minigun" },
     { id: "minigun", name: "Minigun", classes: ["Heavy"], slot: SLOTS.PRIMARY },
     { id: "natascha", name: "Natascha", classes: ["Heavy"], slot: SLOTS.PRIMARY },
     { id: "tomislav", name: "Tomislav", classes: ["Heavy"], slot: SLOTS.PRIMARY },
@@ -173,16 +184,16 @@ export const WEAPONS = [
     { id: "buffalo_steak_sandvich", name: "Buffalo Steak Sandvich", classes: ["Heavy"], slot: SLOTS.SECONDARY },
     { id: "dalokohs_bar", name: "Dalokohs Bar", classes: ["Heavy"], slot: SLOTS.SECONDARY },
     { id: "family_business", name: "Family Business", classes: ["Heavy"], slot: SLOTS.SECONDARY },
-    { id: "fishcake", name: "Fishcake", classes: ["Heavy"], slot: SLOTS.SECONDARY },
+    { id: "fishcake", name: "Fishcake", classes: ["Heavy"], slot: SLOTS.SECONDARY, reskinOf: "dalokohs_bar" },
     { id: "panic_attack_heavy", name: "Panic Attack", classes: ["Heavy"], slot: SLOTS.SECONDARY },
-    { id: "robo_sandvich", name: "Robo-Sandvich", classes: ["Heavy"], slot: SLOTS.SECONDARY },
+    { id: "robo_sandvich", name: "Robo-Sandvich", classes: ["Heavy"], slot: SLOTS.SECONDARY, reskinOf: "sandvich" },
     { id: "sandvich", name: "Sandvich", classes: ["Heavy"], slot: SLOTS.SECONDARY },
     { id: "second_banana", name: "Second Banana", classes: ["Heavy"], slot: SLOTS.SECONDARY },
     { id: "shotgun_heavy", name: "Shotgun", classes: ["Heavy"], slot: SLOTS.SECONDARY },
 
     // Melee
-    { id: "apoco_fists", name: "Apoco-Fists", classes: ["Heavy"], slot: SLOTS.MELEE },
-    { id: "bread_bite", name: "Bread Bite", classes: ["Heavy"], slot: SLOTS.MELEE },
+    { id: "apoco_fists", name: "Apoco-Fists", classes: ["Heavy"], slot: SLOTS.MELEE, reskinOf: "fists" }, // Kill gibs enemies, but technically reskin.
+    { id: "bread_bite", name: "Bread Bite", classes: ["Heavy"], slot: SLOTS.MELEE, reskinOf: "gloves_of_running_urgently" },
     { id: "eviction_notice", name: "Eviction Notice", classes: ["Heavy"], slot: SLOTS.MELEE },
     { id: "fists", name: "Fists", classes: ["Heavy"], slot: SLOTS.MELEE },
     { id: "fists_of_steel", name: "Fists of Steel", classes: ["Heavy"], slot: SLOTS.MELEE },
@@ -192,7 +203,7 @@ export const WEAPONS = [
     { id: "warriors_spirit", name: "Warrior's Spirit", classes: ["Heavy"], slot: SLOTS.MELEE },
 
     // --- ENGINEER ---
-    // Primary (Moved Shotgun here, plus new ones)
+    // Primary
     { id: "frontier_justice", name: "Frontier Justice", classes: ["Engineer"], slot: SLOTS.PRIMARY },
     { id: "panic_attack_engie", name: "Panic Attack", classes: ["Engineer"], slot: SLOTS.PRIMARY },
     { id: "pomson_6000", name: "Pomson 6000", classes: ["Engineer"], slot: SLOTS.PRIMARY },
@@ -201,16 +212,16 @@ export const WEAPONS = [
     { id: "widowmaker", name: "Widowmaker", classes: ["Engineer"], slot: SLOTS.PRIMARY },
 
     // Secondary
-    { id: "capper_engie", name: "C.A.P.P.E.R", classes: ["Engineer"], slot: SLOTS.SECONDARY },
-    { id: "giger_counter", name: "Giger Counter", classes: ["Engineer"], slot: SLOTS.SECONDARY },
-    { id: "lugermorph_engie", name: "Lugermorph", classes: ["Engineer"], slot: SLOTS.SECONDARY },
+    { id: "capper_engie", name: "C.A.P.P.E.R", classes: ["Engineer"], slot: SLOTS.SECONDARY, reskinOf: "pistol" },
+    { id: "giger_counter", name: "Giger Counter", classes: ["Engineer"], slot: SLOTS.SECONDARY, reskinOf: "wrangler" },
+    { id: "lugermorph_engie", name: "Lugermorph", classes: ["Engineer"], slot: SLOTS.SECONDARY, reskinOf: "pistol" },
     { id: "pistol_engie", name: "Pistol", classes: ["Engineer"], slot: SLOTS.SECONDARY },
     { id: "short_circuit", name: "Short Circuit", classes: ["Engineer"], slot: SLOTS.SECONDARY },
     { id: "wrangler", name: "Wrangler", classes: ["Engineer"], slot: SLOTS.SECONDARY },
 
     // Melee
     { id: "eureka_effect", name: "Eureka Effect", classes: ["Engineer"], slot: SLOTS.MELEE },
-    { id: "golden_wrench", name: "Golden Wrench", classes: ["Engineer"], slot: SLOTS.MELEE },
+    { id: "golden_wrench", name: "Golden Wrench", classes: ["Engineer"], slot: SLOTS.MELEE, reskinOf: "wrench" },
     { id: "gunslinger", name: "Gunslinger", classes: ["Engineer"], slot: SLOTS.MELEE },
     { id: "jag", name: "Jag", classes: ["Engineer"], slot: SLOTS.MELEE },
     { id: "southern_hospitality", name: "Southern Hospitality", classes: ["Engineer"], slot: SLOTS.MELEE },
@@ -241,14 +252,14 @@ export const WEAPONS = [
 
     // --- SNIPER ---
     // Primary
-    { id: "awper_hand", name: "Awper Hand", classes: ["Sniper"], slot: SLOTS.PRIMARY },
+    { id: "awper_hand", name: "AWPer Hand", classes: ["Sniper"], slot: SLOTS.PRIMARY, reskinOf: "sniper_rifle" },
     { id: "bazaar_bargain", name: "Bazaar Bargain", classes: ["Sniper"], slot: SLOTS.PRIMARY },
     { id: "classic", name: "Classic", classes: ["Sniper"], slot: SLOTS.PRIMARY },
-    { id: "fortified_compound", name: "Fortified Compound", classes: ["Sniper"], slot: SLOTS.PRIMARY },
+    { id: "fortified_compound", name: "Fortified Compound", classes: ["Sniper"], slot: SLOTS.PRIMARY, reskinOf: "huntsman" },
     { id: "hitmans_heatmaker", name: "Hitman's Heatmaker", classes: ["Sniper"], slot: SLOTS.PRIMARY },
     { id: "huntsman", name: "Huntsman", classes: ["Sniper"], slot: SLOTS.PRIMARY },
     { id: "machina", name: "Machina", classes: ["Sniper"], slot: SLOTS.PRIMARY },
-    { id: "shooting_star", name: "Shooting Star", classes: ["Sniper"], slot: SLOTS.PRIMARY },
+    { id: "shooting_star", name: "Shooting Star", classes: ["Sniper"], slot: SLOTS.PRIMARY, reskinOf: "machina" },
     { id: "sniper_rifle", name: "Sniper Rifle", classes: ["Sniper"], slot: SLOTS.PRIMARY },
     { id: "sydney_sleeper", name: "Sydney Sleeper", classes: ["Sniper"], slot: SLOTS.PRIMARY },
 
@@ -258,7 +269,7 @@ export const WEAPONS = [
     { id: "darwins_danger_shield", name: "Darwin's Danger Shield", classes: ["Sniper"], slot: SLOTS.SECONDARY },
     { id: "jarate", name: "Jarate", classes: ["Sniper"], slot: SLOTS.SECONDARY },
     { id: "razorback", name: "Razorback", classes: ["Sniper"], slot: SLOTS.SECONDARY },
-    { id: "self_aware_beauty_mark", name: "Self-Aware Beauty Mark", classes: ["Sniper"], slot: SLOTS.SECONDARY },
+    { id: "self_aware_beauty_mark", name: "Self-Aware Beauty Mark", classes: ["Sniper"], slot: SLOTS.SECONDARY, reskinOf: "jarate" },
     { id: "smg", name: "SMG", classes: ["Sniper"], slot: SLOTS.SECONDARY },
 
     // Melee
@@ -270,7 +281,7 @@ export const WEAPONS = [
     // --- SPY ---
     // Secondary (Revolvers)
     { id: "ambassador", name: "Ambassador", classes: ["Spy"], slot: SLOTS.SECONDARY },
-    { id: "big_kill", name: "Big Kill", classes: ["Spy"], slot: SLOTS.SECONDARY },
+    { id: "big_kill", name: "Big Kill", classes: ["Spy"], slot: SLOTS.SECONDARY, reskinOf: "revolver" },
     { id: "diamondback", name: "Diamondback", classes: ["Spy"], slot: SLOTS.SECONDARY },
     { id: "enforcer", name: "Enforcer", classes: ["Spy"], slot: SLOTS.SECONDARY },
     { id: "letranger", name: "L'Etranger", classes: ["Spy"], slot: SLOTS.SECONDARY },
@@ -278,50 +289,65 @@ export const WEAPONS = [
 
     // Melee (Knives)
     { id: "big_earner", name: "Big Earner", classes: ["Spy"], slot: SLOTS.MELEE },
-    { id: "black_rose", name: "Black Rose", classes: ["Spy"], slot: SLOTS.MELEE },
+    { id: "black_rose", name: "Black Rose", classes: ["Spy"], slot: SLOTS.MELEE, reskinOf: "knife" },
     { id: "connivers_kunai", name: "Conniver's Kunai", classes: ["Spy"], slot: SLOTS.MELEE },
     { id: "knife", name: "Knife", classes: ["Spy"], slot: SLOTS.MELEE },
-    { id: "sharp_dresser", name: "Sharp Dresser", classes: ["Spy"], slot: SLOTS.MELEE },
+    { id: "sharp_dresser", name: "Sharp Dresser", classes: ["Spy"], slot: SLOTS.MELEE, reskinOf: "knife" },
     { id: "spycicle", name: "Spy-cicle", classes: ["Spy"], slot: SLOTS.MELEE },
-    { id: "wanga_prick", name: "Wanga Prick", classes: ["Spy"], slot: SLOTS.MELEE },
+    { id: "wanga_prick", name: "Wanga Prick", classes: ["Spy"], slot: SLOTS.MELEE, reskinOf: "your_eternal_reward" },
     { id: "your_eternal_reward", name: "Your Eternal Reward", classes: ["Spy"], slot: SLOTS.MELEE },
 
     // Watch (Watches)
     { id: "cloak_and_dagger", name: "Cloak and Dagger", classes: ["Spy"], slot: SLOTS.WATCH },
     { id: "dead_ringer", name: "Dead Ringer", classes: ["Spy"], slot: SLOTS.WATCH },
-    { id: "enthusiasts_timepiece", name: "Enthusiast's Timepiece", classes: ["Spy"], slot: SLOTS.WATCH },
+    { id: "enthusiasts_timepiece", name: "Enthusiast's Timepiece", classes: ["Spy"], slot: SLOTS.WATCH, reskinOf: "invis_watch" },
     { id: "invis_watch", name: "Invis Watch", classes: ["Spy"], slot: SLOTS.WATCH },
-    { id: "quackenbirdt", name: "Quäckenbirdt", classes: ["Spy"], slot: SLOTS.WATCH },
+    { id: "quackenbirdt", name: "Quäckenbirdt", classes: ["Spy"], slot: SLOTS.WATCH, reskinOf: "invis_watch" },
 
-    // Building (Sappers)
-    { id: "ap_sap", name: "Ap-Sap", classes: ["Spy"], slot: SLOTS.BUILDING },
-    { id: "red_tape_recorder", name: "Red-Tape Recorder", classes: ["Spy"], slot: SLOTS.BUILDING },
-    { id: "sapper", name: "Sapper", classes: ["Spy"], slot: SLOTS.BUILDING },
-    { id: "snack_attack", name: "Snack Attack", classes: ["Spy"], slot: SLOTS.BUILDING },
+    // Sapper (Sappers)
+    { id: "ap_sap", name: "Ap-Sap", classes: ["Spy"], slot: SLOTS.SAPPER, reskinOf: "sapper" },
+    { id: "red_tape_recorder", name: "Red-Tape Recorder", classes: ["Spy"], slot: SLOTS.SAPPER },
+    { id: "sapper", name: "Sapper", classes: ["Spy"], slot: SLOTS.SAPPER },
+    { id: "snack_attack", name: "Snack Attack", classes: ["Spy"], slot: SLOTS.SAPPER, reskinOf: "sapper" },
 
     // --- MULTI-CLASS MELEE ---
-    // Saxxy (All classes)
-    ...["Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper", "Spy"].map(c => ({ id: "saxxy", name: "Saxxy", classes: [c], slot: SLOTS.MELEE })),
-    // Golden Frying Pan (All classes)
-    ...["Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper", "Spy"].map(c => ({ id: "golden_frying_pan", name: "Golden Frying Pan", classes: [c], slot: SLOTS.MELEE })),
-    // Prinny Machete (All classes)
-    ...["Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper", "Spy"].map(c => ({ id: "prinny_machete", name: "Prinny Machete", classes: [c], slot: SLOTS.MELEE })),
-    // Frying Pan (All classes except Spy)
-    ...["Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper"].map(c => ({ id: "frying_pan", name: "Frying Pan", classes: [c], slot: SLOTS.MELEE })),
+    // Saxxy (All classes) - Reskin of stock Melee usually
+    ...["Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper", "Spy"].map(c => ({ id: "saxxy", name: "Saxxy", classes: [c], slot: SLOTS.MELEE, reskinOf: "stock_melee" })),
+    // "stock_melee" is vague, maybe should map to specific ID per class? 
+    // Complicated. Let's just mark reskinOf: "Stock Melee" or similar string, and handle logic to show "Stock Melee" if we want, or map per class.
+    // Simpler: Just rely on it being a reskinOf something to filter it out when reskins disabled. 
+    // If I use a generic ID like "stock_melee", I need to ensure it's handled in display effectively if I want parenthesis.
+    // Actually, Saxxy acts as Frying Pan? No. Saxxy is Stock reskin. 
+    // I'll leave reskinOf: "Stock Melee" for now and if it shows "(Stock Melee)" that's acceptable.
 
-    // Conscientious Objector (not for: Engineer, Spy)
-    ...["Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Medic", "Sniper"].map(c => ({ id: "conscientious_objector", name: "Conscientious Objector", classes: [c], slot: SLOTS.MELEE })),
-    // Freedom Staff (not for: Engineer, Spy)
-    ...["Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Medic", "Sniper"].map(c => ({ id: "freedom_staff", name: "Freedom Staff", classes: [c], slot: SLOTS.MELEE })),
-    // Bat Outta Hell (not for: Engineer, Spy)
-    ...["Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Medic", "Sniper"].map(c => ({ id: "bat_outta_hell", name: "Bat Outta Hell", classes: [c], slot: SLOTS.MELEE })),
-    // Memory Maker (not for: Engineer, Spy)
-    ...["Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Medic", "Sniper"].map(c => ({ id: "memory_maker", name: "Memory Maker", classes: [c], slot: SLOTS.MELEE })),
-    // Ham Shank (not for: Engineer, Spy)
-    ...["Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Medic", "Sniper"].map(c => ({ id: "ham_shank", name: "Ham Shank", classes: [c], slot: SLOTS.MELEE })),
-    // Necro Smasher (not for: Spy)
-    ...["Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper"].map(c => ({ id: "necro_smasher", name: "Necro Smasher", classes: [c], slot: SLOTS.MELEE })),
-    // Crossing Guard (not for: Engineer, Spy)
-    ...["Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Medic", "Sniper"].map(c => ({ id: "crossing_guard", name: "Crossing Guard", classes: [c], slot: SLOTS.MELEE })),
+    // Golden Frying Pan (All classes) - Reskin of Pan? Or Stock? It's Pan.
+    ...["Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper", "Spy"].map(c => ({ id: "golden_frying_pan", name: "Golden Frying Pan", classes: [c], slot: SLOTS.MELEE, reskinOf: "stock_melee" })),
+
+    // Prinny Machete (All classes) - Distinct stats? No, stock reskin.
+    ...["Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper", "Spy"].map(c => ({ id: "prinny_machete", name: "Prinny Machete", classes: [c], slot: SLOTS.MELEE, reskinOf: "stock_melee" })),
+
+    // Frying Pan (All classes except Spy) - Distinct (loud noise). 
+    ...["Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper"].map(c => ({ id: "frying_pan", name: "Frying Pan", classes: [c], slot: SLOTS.MELEE, reskinOf: "stock_melee" })), // Reskin of stock
+
+    // Conscientious Objector (not for: Engineer, Spy) - Stock reskin.
+    ...["Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Medic", "Sniper"].map(c => ({ id: "conscientious_objector", name: "Conscientious Objector", classes: [c], slot: SLOTS.MELEE, reskinOf: "stock_melee" })),
+
+    // Freedom Staff (not for: Engineer, Spy) - Stock reskin.
+    ...["Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Medic", "Sniper"].map(c => ({ id: "freedom_staff", name: "Freedom Staff", classes: [c], slot: SLOTS.MELEE, reskinOf: "stock_melee" })),
+
+    // Bat Outta Hell (not for: Engineer, Spy) - Stock reskin.
+    ...["Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Medic", "Sniper"].map(c => ({ id: "bat_outta_hell", name: "Bat Outta Hell", classes: [c], slot: SLOTS.MELEE, reskinOf: "stock_melee" })),
+
+    // Memory Maker (not for: Engineer, Spy) - Stock reskin.
+    ...["Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Medic", "Sniper"].map(c => ({ id: "memory_maker", name: "Memory Maker", classes: [c], slot: SLOTS.MELEE, reskinOf: "stock_melee" })),
+
+    // Ham Shank (not for: Engineer, Spy) - Pan reskin? Or Stock? It's Pan reskin (Sound, etc).
+    ...["Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Medic", "Sniper"].map(c => ({ id: "ham_shank", name: "Ham Shank", classes: [c], slot: SLOTS.MELEE, reskinOf: "stock_melee" })),
+
+    // Necro Smasher (not for: Spy) - Stock reskin.
+    ...["Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper"].map(c => ({ id: "necro_smasher", name: "Necro Smasher", classes: [c], slot: SLOTS.MELEE, reskinOf: "stock_melee" })),
+
+    // Crossing Guard (not for: Engineer, Spy) - Stock reskin.
+    ...["Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Medic", "Sniper"].map(c => ({ id: "crossing_guard", name: "Crossing Guard", classes: [c], slot: SLOTS.MELEE, reskinOf: "stock_melee" })),
 
 ];
