@@ -30,10 +30,10 @@ export function generateLoadout(className, excludedIds = []) {
 
     let requiredSlots = [SLOTS.PRIMARY, SLOTS.SECONDARY, SLOTS.MELEE];
 
-    if (className === "Engineer") requiredSlots.push(SLOTS.PDA);
+    if (className === "Engineer") requiredSlots = [SLOTS.PRIMARY, SLOTS.SECONDARY, SLOTS.MELEE, SLOTS.PDA];
     if (className === "Spy") {
-        // Spy has no Primary (Revolver is Secondary), Melee, PDA, PDA2
-        requiredSlots = [SLOTS.SECONDARY, SLOTS.MELEE, SLOTS.PDA, SLOTS.PDA2];
+        // Spy: Secondary (Gun) -> Melee (Knife) -> Watch (Watch) -> Building (Sapper)
+        requiredSlots = [SLOTS.SECONDARY, SLOTS.MELEE, SLOTS.WATCH, SLOTS.BUILDING];
     }
 
     const loadout = {};

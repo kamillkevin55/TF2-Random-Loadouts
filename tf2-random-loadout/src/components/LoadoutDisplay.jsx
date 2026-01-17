@@ -58,13 +58,8 @@ export default function LoadoutDisplay({ currentClass, loadout, onGenerate, onCl
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {[SLOTS.PRIMARY, SLOTS.SECONDARY, SLOTS.MELEE, SLOTS.PDA, SLOTS.PDA2].map((slot) => {
+                            {Object.keys(loadout).map((slot) => {
                                 const weapon = loadout[slot];
-                                // Only render if slot is relevant for the class (weapon object exists or is explicitly null if exclusion blocked it)
-                                // However, we need to know if the slot exists for the class at all.
-                                // WE could rely on the `loadout` object having keys.
-
-                                if (loadout[slot] === undefined) return null;
 
                                 return (
                                     <div
@@ -76,7 +71,7 @@ export default function LoadoutDisplay({ currentClass, loadout, onGenerate, onCl
                                         </div>
 
                                         <h3 className="text-xs font-bold text-[#cf6a32] uppercase tracking-widest mb-2">
-                                            {slot === 'PDA2' ? 'Building' : slot}
+                                            {slot}
                                         </h3>
 
                                         <div className="min-h-[60px] flex items-center">
