@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from './components/Sidebar';
 import LoadoutDisplay from './components/LoadoutDisplay';
 import { generateLoadout, getRandomClass } from './utils/generator';
+import { WEAPONS } from './data/tf2_data';
 
 function App() {
   const [currentClass, setCurrentClass] = useState(null);
@@ -25,11 +26,24 @@ function App() {
 
   const toggleExclusion = (id) => {
     setExcludedWeapons(prev => {
-      if (prev.includes(id)) {
-        return prev.filter(x => x !== id);
+      // Find if this weapon is a parent to any reskins
+      const children = WEAPONS.filter(w => w.reskinOf === id).map(w => w.id);
+
+      const isCurrentlyExcluded = prev.includes(id);
+      let newExcluded;
+
+      if (isCurrentlyExcluded) {
+        // We are including it back (removing from excluded list)
+        // Also include all children
+        newExcluded = prev.filter(x => x !== id && !children.includes(x));
       } else {
-        return [...prev, id];
+        // We are excluding it
+        // Also exclude all children
+        // Use Set to avoid duplicates
+        const combined = new Set([...prev, id, ...children]);
+        newExcluded = Array.from(combined);
       }
+      return newExcluded;
     });
   };
 
