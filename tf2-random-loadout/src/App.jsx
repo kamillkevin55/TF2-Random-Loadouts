@@ -6,11 +6,22 @@ import { generateLoadout, getRandomClass } from './utils/generator';
 function App() {
   const [currentClass, setCurrentClass] = useState(null);
   const [loadout, setLoadout] = useState({});
-  const [excludedWeapons, setExcludedWeapons] = useState([]);
-  const [includeReskins, setIncludeReskins] = useState(true);
+  const [excludedWeapons, setExcludedWeapons] = useState(() => {
+    const saved = localStorage.getItem('excludedWeapons');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [includeReskins, setIncludeReskins] = useState(() => {
+    const saved = localStorage.getItem('includeReskins');
+    return saved !== null ? JSON.parse(saved) : true;
+  });
 
-  // Load from localeStorage if needed, but simplest is memory for now.
-  // Optional: Persist exclusions
+  useEffect(() => {
+    localStorage.setItem('excludedWeapons', JSON.stringify(excludedWeapons));
+  }, [excludedWeapons]);
+
+  useEffect(() => {
+    localStorage.setItem('includeReskins', JSON.stringify(includeReskins));
+  }, [includeReskins]);
 
   const toggleExclusion = (id) => {
     setExcludedWeapons(prev => {
