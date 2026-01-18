@@ -327,7 +327,7 @@ export const WEAPONS = [
     ...["Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper", "Spy"].map(c => ({ id: "prinny_machete", name: "Prinny Machete", classes: [c], slot: SLOTS.MELEE, reskinOf: "stock_melee" })),
 
     // Frying Pan (All classes except Spy) - Distinct (loud noise). 
-    ...["Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper"].map(c => ({ id: "frying_pan", name: "Frying Pan", classes: [c], slot: SLOTS.MELEE, reskinOf: "stock_melee" })), // Reskin of stock
+    ...["Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Medic", "Sniper"].map(c => ({ id: "frying_pan", name: "Frying Pan", classes: [c], slot: SLOTS.MELEE, reskinOf: "stock_melee" })), // Reskin of stock
 
     // Conscientious Objector (not for: Engineer, Spy) - Stock reskin.
     ...["Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Medic", "Sniper"].map(c => ({ id: "conscientious_objector", name: "Conscientious Objector", classes: [c], slot: SLOTS.MELEE, reskinOf: "stock_melee" })),
